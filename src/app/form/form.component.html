@@ -1,0 +1,39 @@
+<form [formGroup]="profileForm">
+    <h2>Nombre: </h2>
+    <label for="firstName">First Name: </label>
+    <input id="firstName" type="text" formControlName="firstName" name="firstName" [ngClass]="{'is-invalid':submitted && f['firstName'].errors}"><br><br>
+
+    <!-- <div *ngIf="profileForm.get('firstName').errors?.required"> -->
+    <!-- <div *ngIf="profileForm.get('firstName').errors?.['required']"> -->
+    <div *ngIf="f['firstName'].errors" class="form-control">
+        El campo es requerido
+    </div>
+
+    <label for="last-name">Last Name: </label>
+    <input id="last-name" type="text" formControlName="lastName"><br><br>
+
+    <div formGroupName="address">
+        <h2>Dirección: </h2>
+
+        <label for="street">Street: </label>
+        <input id="street" type="text" formControlName="street"><br><br>
+
+        <label for="city">City: </label>
+        <input id="city" type="text" formControlName="city"><br><br>
+
+        <label for="state">State: </label>
+        <input id="state" type="text" formControlName="state"><br><br>
+
+        <label for="zip">Zip Code: </label>
+        <input id="zip" type="text" formControlName="zip"><br><br>
+    </div>
+
+    <p>Complete el formulario</p>
+</form>
+
+<button type="button" (click)="onSubmit()" [disabled]="profileForm.invalid">Guardar</button> <br><br>
+
+<p>Form Value: {{ profileForm.value | json}}</p>
+<p>Form Status: {{ profileForm.status}}</p>
+
+<button type="button" (click)="updateProfile()">Actualizar Perfil</button>
