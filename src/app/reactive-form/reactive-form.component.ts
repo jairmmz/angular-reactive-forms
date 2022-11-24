@@ -1,5 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, AbstractControl, AsyncValidator, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { AuthService } from './auth.service';
+
+// authService se pasa como parámetro al async validator
+export function emailValidator(authService: AuthService): AsyncValidatorFn {
+  return (control: AbstractControl): Observable<ValidationErrors | null> => {
+    const email = (control.value as string).trim().toLowerCase();
+
+    return authService
+      .isAlreadyExistingEmail(email)
+      .pipe(map(isExisting => (isExisting ? { emailExists: true } : null)));
+  };
+}
 
 @Component({
   selector: 'app-reactive-form',
@@ -11,16 +25,18 @@ export class ReactiveFormComponent implements OnInit {
   registerForm!: FormGroup;
   submitted = false;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private authService: AuthService) {}
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group(
       {
-        name: ['', Validators.required],
-        email: ['', [Validators.required, Validators.email]],
-        // email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
+        name: ['', [Validators.required, Validators.pattern("^([a-zA-Z ]+)$")]],
+        lastName: ['', [Validators.required, Validators.minLength(5), Validators.pattern("^([a-zA-Z ]+)$")]],
+        email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")],
+          [emailValidator(this.authService)]],
         password: ['', [Validators.required, Validators.minLength(6)]],
         repeatPass: ['', Validators.required],
+        terms: ['', Validators.requiredTrue]
       },
       {
         validator: this.MustMatch('password', 'repeatPass'), // Validando
@@ -66,11 +82,13 @@ export class ReactiveFormComponent implements OnInit {
       'SUCCESS!! :-)\n\n' + JSON.stringify(this.registerForm.value, null, 4)
     );
 
-    console.warn(this.registerForm.value);
+    console.log(this.registerForm.value);
   }
 
   onReset() {
     this.submitted = false;
     this.registerForm.reset();
   }
+
+
 }
