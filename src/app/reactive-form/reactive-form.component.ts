@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormBuilder, AbstractControl, AsyncValidator, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, AbstractControl, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
@@ -23,7 +23,7 @@ export function emailValidator(authService: AuthService): AsyncValidatorFn {
 
 export class ReactiveFormComponent implements OnInit {
   registerForm!: FormGroup;
-  submitted = false;
+  // submitted = false;
 
   constructor(private formBuilder: FormBuilder, private authService: AuthService) {}
 
@@ -40,7 +40,7 @@ export class ReactiveFormComponent implements OnInit {
       },
       {
         validator: this.MustMatch('password', 'repeatPass'), // Validando
-      }
+      },
     );
   }
 
@@ -70,25 +70,22 @@ export class ReactiveFormComponent implements OnInit {
   }
 
   onSubmit() {
-    this.submitted = true;
+    // this.submitted = true;
 
-    // stop here if form is invalid
+    // Detiene si el formulario no es válido
     if (this.registerForm.invalid) {
       return;
     }
-
     // Muestra valores de formulario en caso de éxito
     alert(
       'SUCCESS!! :-)\n\n' + JSON.stringify(this.registerForm.value, null, 4)
     );
-
     console.log(this.registerForm.value);
   }
 
   onReset() {
-    this.submitted = false;
+    // this.submitted = false;
     this.registerForm.reset();
   }
-
 
 }

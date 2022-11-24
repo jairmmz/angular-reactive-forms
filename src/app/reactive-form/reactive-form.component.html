@@ -23,12 +23,8 @@
 		<div *ngIf="form['email']?.errors && (form['name'].dirty || form['email'].touched)" class="invalid-feedback">
 			<div *ngIf="form['email'].errors?.['required']">El email es obligatorio</div>
 			<div *ngIf="form['email'].errors?.['pattern']">El email debe de ser válido ejm: example@gmail.com</div>
-			<div *ngIf="form['email'].errors?.['emailValidator']">El email ya existe, ingrese otro</div>
+			<div *ngIf="!(form['email'].errors?.['required'] || form['email'].errors?.['pattern']) && (form['email'].dirty && form['email'].touched)">El email ya existe, ingrese otro</div>
 		</div>
-
-		<!-- <div *ngIf="form['email']?.hasError('required')">
-			<span>ss</span>
-		</div> -->
 
 		<label>Contraseña*</label>
 		<input type="password" formControlName="password" class="form-control" [ngClass]="{'is-valid': !form['password'].invalid , 'is-invalid': form['password'].invalid && form['password'].touched }" />
@@ -41,7 +37,7 @@
 		<input type="password" formControlName="repeatPass" class="form-control" [ngClass]="{'is-valid': !form['repeatPass'].invalid , 'is-invalid': form['repeatPass'].invalid && form['repeatPass'].touched }" />
 		<div *ngIf="form['repeatPass'].errors && (form['repeatPass'].dirty || form['repeatPass'].touched)" class="invalid-feedback">
 			<div *ngIf="form['repeatPass'].errors?.['required']">Repetir contraseña es requerido</div>
-			<div *ngIf="form['repeatPass'].errors?.['mustMatch']">Las contraseñas deben coincidir</div>
+			<div *ngIf="form['repeatPass'].errors?.['mustMatch']">Las contraseñas no coinciden</div>
 		</div>
 
 		<br>
