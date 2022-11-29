@@ -54,7 +54,6 @@ export class ReactiveFormComponent implements OnInit {
         // Retorna si otro validador ya ha encontrado un error en el MatchingControl
         return;
       }
-
       // Establecer error en MatchControl si falla la validación
       if (control.value !== matchingControl.value) {
         matchingControl.setErrors({ mustMatch: true });

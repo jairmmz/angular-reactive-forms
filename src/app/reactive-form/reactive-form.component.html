@@ -8,6 +8,7 @@
 			<div *ngIf="form['name'].errors?.['pattern']">El formato es incorrecto</div>
 		</div>
 
+
 		<label>Apellidos*</label>
 		<input type="text" formControlName="lastName" class="form-control" [ngClass]="{'is-valid': !form['lastName'].invalid ,'is-invalid':  form['lastName'].invalid && form['lastName'].touched }" />
 		<div *ngIf="form['lastName'].errors && (form['lastName'].dirty || form['lastName'].touched)" class="invalid-feedback">
