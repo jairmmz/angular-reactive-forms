@@ -7,7 +7,7 @@ import { AuthService } from './auth.service';
 // authService se pasa como parámetro al async validator
 export function emailValidator(authService: AuthService): AsyncValidatorFn {
   return (control: AbstractControl): Observable<ValidationErrors | null> => {
-    const email = (control.value as string).trim().toLowerCase();
+    const email = (control.value as string).trim().toLowerCase(); // Elimina espacios, devuelve un valor lower
 
     return authService
       .isAlreadyExistingEmail(email)
@@ -30,8 +30,8 @@ export class ReactiveFormComponent implements OnInit {
   ngOnInit() {
     this.registerForm = this.formBuilder.group(
       {
-        name: ['', [Validators.required, Validators.pattern("^([a-zA-Z ]+)$")]],
-        lastName: ['', [Validators.required, Validators.minLength(5), Validators.pattern("^([a-zA-Z ]+)$")]],
+        name: ['', [Validators.required, Validators.pattern("^[A-ZÑa-zñáéíóúÁÉÍÓÚ ]+$")]],
+        lastName: ['', [Validators.required, Validators.minLength(3), Validators.pattern("^[A-ZÑa-zñáéíóúÁÉÍÓÚ ]+$")]],
         email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")],
           [emailValidator(this.authService)]],
         password: ['', [Validators.required, Validators.minLength(6)]],
@@ -39,7 +39,7 @@ export class ReactiveFormComponent implements OnInit {
         terms: ['', Validators.requiredTrue]
       },
       {
-        validator: this.MustMatch('password', 'repeatPass'), // Validando
+        validator: this.MustMatch('password', 'repeatPass'), // Validando - Debe coincidir
       },
     );
   }
@@ -63,11 +63,12 @@ export class ReactiveFormComponent implements OnInit {
     };
   }
 
-  // Captador de conveniencia para un fácil acceso a los campos de formulario
+  // Para un fácil acceso a los campos de formulario
   get form() {
     return this.registerForm.controls;
   }
 
+  // Enviar formulario
   onSubmit() {
     // this.submitted = true;
 
@@ -82,6 +83,7 @@ export class ReactiveFormComponent implements OnInit {
     console.log(this.registerForm.value);
   }
 
+  // Resetar campos del formulario.
   onReset() {
     // this.submitted = false;
     this.registerForm.reset();

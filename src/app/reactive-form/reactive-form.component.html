@@ -13,15 +13,15 @@
 		<input type="text" formControlName="lastName" class="form-control" [ngClass]="{'is-valid': !form['lastName'].invalid ,'is-invalid':  form['lastName'].invalid && form['lastName'].touched }" />
 		<div *ngIf="form['lastName'].errors && (form['lastName'].dirty || form['lastName'].touched)" class="invalid-feedback">
 			<div *ngIf="form['lastName'].errors?.['required']">El apellido es obligatorio</div>
-			<div *ngIf="form['lastName'].errors?.['minlength']">El apellido debe tener al menos 5 caracteres</div>
+			<div *ngIf="form['lastName'].errors?.['minlength']">El apellido debe tener al menos 3 caracteres</div>
 			<div *ngIf="form['lastName'].errors?.['pattern']">El formato es incorrecto</div>
 		</div>
 
-		<label>Email*</label>
+		<label>Correo electrónico*</label>
 		<input type="text" formControlName="email" class="form-control" [ngClass]="{'is-valid': !form['email'].invalid , 'is-invalid': form['email'].invalid && form['email'].touched }" />
 		<div class="loader" *ngIf="(form['email'].statusChanges | async) === 'PENDING'">Comprobando...</div>
 
-		<div *ngIf="form['email']?.errors && (form['name'].dirty || form['email'].touched)" class="invalid-feedback">
+		<div *ngIf="form['email']?.errors && (form['name'].dirty && form['email'].touched)" class="invalid-feedback">
 			<div *ngIf="form['email'].errors?.['required']">El email es obligatorio</div>
 			<div *ngIf="form['email'].errors?.['pattern']">El email debe de ser válido ejm: example@gmail.com</div>
 			<div *ngIf="!(form['email'].errors?.['required'] || form['email'].errors?.['pattern']) && (form['email'].dirty && form['email'].touched)">El email ya existe, ingrese otro</div>
@@ -49,7 +49,7 @@
 
 		<div class="text-center mt-4">
 			<button class="btn btn-primary mr-1" [disabled]="registerForm.invalid">Registrarse</button>
-			<button class="btn btn-secondary" type="reset" (click)="onReset()">Cancelar</button>
+			<button class="btn btn-secondary" type="reset" (click)="onReset()">Limpiar</button>
 		</div>
         <br>
         <!-- <span> Nombre: {{ registerForm.value['name'] }} </span> -->
